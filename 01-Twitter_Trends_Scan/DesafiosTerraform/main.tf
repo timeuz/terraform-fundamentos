@@ -7,12 +7,17 @@ terraform {
     }
   }
 }
+resource "digitalocean_vpc" "vpc-twitter" {
+  name   = "vpc-twitter"
+  region = var.droplet_region
+}
 
 resource "digitalocean_droplet" "vm-twitter" {
   name     = "twitter-trends-scan"
   image    = var.droplet_image
   region   = var.droplet_region
   size     = var.droplet_size
+  vpc_uuid = digitalocean_vpc.vpc-twitter.id
   ssh_keys = [data.digitalocean_ssh_key.ssh-key.id]
 }
 
